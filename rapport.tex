@@ -1,0 +1,102 @@
+\documentclass[a4paper,oneside,11pt]{book}
+% \documentclass[twoside]{BookTemplate}
+% choose if 2-sides (=>printing) or not
+
+%~ language : load french support
+\usepackage[frenchb]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+
+%% add header (package configs etc)
+\input{LATEX/header.tex}
+\input{config.tex}
+
+%% bibiliography setup
+% sorted as it appears in the text
+\usepackage[backend=biber, bibencoding=auto, sorting=none]{biblatex}
+\addbibresource{parties/bibliography.bib}
+
+% ======================================
+
+\begin{document}
+
+\dominitoc % Initialization of minitoc out of the block !
+{   
+    % in here, no header/footer
+    \pagestyle{empty}
+
+    \input{LATEX/titlepage.tex}
+    \cleardoublepage
+
+    \input{parties/0-abstract.tex}
+    \cleardoublepage
+    
+    \input{parties/1-about_the_author.tex}
+    \cleardoublepage
+
+    \tableofcontents
+    \cleardoublepage
+}
+
+%== begin parts
+%% intro
+\part{Introduction}
+\setcounter{page}{1} % first numbered page
+\chapter{Introduction}
+\myminitoc
+\input{parties/2-introduction.tex}
+ 
+%% intro
+\chapter{Objectifs}\label{chap:objectifs}
+\myminitoc
+\input{parties/3-objectifs.tex}
+
+%% analyse
+\part{Analyse}
+\label{chap:anal}
+\myminitoc
+\input{parties/4-analyse.tex}
+
+
+%% conception
+\part{Conception}
+\label{chap:conception}
+\myminitoc
+\input{parties/5-conception.tex}
+
+ 
+%% implementation
+\part{Implémentation et tests}
+ 
+\chapter{Implémentation}\label{chap:impl}
+\myminitoc
+\input{parties/6-implementation.tex}
+%% tests
+\chapter{Tests}\label{chap:tests}
+\myminitoc
+\input{parties/7-tests.tex}
+
+%% conclusion
+\part{Conclusion}
+\input{parties/8-conclusion.tex}
+
+% ----------------------------------
+\part{Annexes et bibliographie}
+
+% unnumbered chapters, alphanumeric numbering of sections
+\appendix
+\renewcommand{\thechapter}{}
+\renewcommand{\thesection}{\Alph{section}}
+
+%% bilbiography
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliographie}
+\nocite{*} % print all, even if not cited
+% \printbibliography{heading=bibintoc, title={Bibliographie}}
+\printbibliography
+
+
+Je, soussigné \authorname, déclare sur l'honneur que le travail rendu est le fruit d'un travail personnel. Je certifie ne pas avoir eu recours au plagiat ou à toutes autres formes de fraudes. Toutes les sources d'information utilisées et les citations d'auteur ont été clairement mentionnées.
+
+\end{document}

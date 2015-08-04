@@ -1,0 +1,12 @@
+*.backup
+out/*
+*.sh
+*.txt
+*.log
+*.aux
+*.maf
+*.mtc
+*.mtc0
+*.toc
+*.blg
+*.pdf

@@ -1,0 +1,130 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{myusefulcommands}
+
+\RequirePackage[justification=centering]{caption} % center caption in figure
+
+% Big Oh notation. Use it with \bigO{ln n}
+\newcommand{\bigO}[1]{\ensuremath{\mathop{\mathopen{\mathcal{O}\mathopen{\left(\text{#1}\right)}}}}}
+% Variant if you want to use a math expression such as O( \frac{n² + n + 5}{n+150} )
+\newcommand{\bigOMath}[1]{\ensuremath{\mathop{\mathopen{\mathcal{O}\mathopen{\left(#1\right)}}}}}
+
+
+%~ \code[text]
+%~ text in monospace font
+\newcommand{\code}[1]{{\small\texttt{#1}\normalsize}}
+
+
+%~ \guillemets[text] 
+%~ enclose the text between french quotes
+\newcommand{\guillemets}[1]{\og#1\fg{}}
+
+
+%include a figure, centered, with caption and label
+% usage : \includeFigure{percentage of textwidth}{path}{caption}
+% \usepackage{float}
+\newcommand{\includeFigurep}[3]{
+    \begin{figure}[p]
+    \centering
+    \includegraphics[width=#1\textwidth]{#2}
+    \caption{#3}
+    \label{fig:#2}
+    \end{figure}
+}
+
+%split the page in two columns
+\newcommand{\minitwo}[2]{
+    \begin{center}
+    \begin{minipage}{.49\textwidth}{#1}\end{minipage}
+    \begin{minipage}{.49\textwidth}{#2}\end{minipage}
+    \end{center}
+}
+
+%include a figure, centered, with caption and label
+% usage : \includeFigure{percentage of textwidth}{path}{caption}
+% \usepackage{float}
+\newcommand{\includeFigure}[3]{
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=#1\textwidth]{#2}
+    \caption{#3}
+    \label{fig:#2}
+    \end{figure}
+}
+
+\usepackage{tcolorbox}
+\definecolor{light-gray}{gray}{0.85}
+\definecolor{dark-gray}{gray}{0.10}
+\newenvironment{notepar}[1] %http://mirror.switch.ch/ftp/mirror/tex/macros/latex/contrib/tcolorbox/tcolorbox.pdf
+  {\begin{tcolorbox}[title={#1},colback=white,colframe=light-gray,coltext=dark-gray,coltitle=dark-gray,fonttitle=\bfseries\large]}
+  {\end{tcolorbox}}
+\endinput
+
+% -------------------------------------- boxes
+
+\RequirePackage{mdframed}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{framed}
+
+  
+\definecolor{warningorangeborder}{RGB}{173, 89, 20}
+\definecolor{infoblue}{RGB}{28, 99, 221}
+
+% -------------------
+
+% see http://tex.stackexchange.com/questions/53245/pretty-formattings-for-warning-and-info-blocks
+\newenvironment{important}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={red!15}, hidealllines=true,
+      skipabove=0.7\baselineskip, skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt, splittopskip=4pt, #1]%
+   \makebox[0pt]{% ignore the withd of !
+      \smash{% ignor the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{red!70!black}\usefont{T1}{put}{b}{b} !}% type the bold red !
+%             {\color{red!70!black}\sffamily\bfseries !}% type the bold red !
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+
+% -------------------
+
+\newenvironment{info}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={infoblue!10}, hidealllines=true,
+      skipabove=0.7\baselineskip, skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt, splittopskip=4pt, #1]%
+   \makebox[0pt]{% ignore the withd of !
+      \smash{% ignore the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{infoblue}\bfseries\usefont{T1}{put}{b}{b}\itshape i}% type the bold red !
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+
+% -------------------
+
+\newenvironment{warning}[1][]{%
+   \vspace{6pt}
+   \begin{mdframed}[%
+      backgroundcolor={orange!10}, hidealllines=true,
+      skipabove=0.7\baselineskip, skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt, splittopskip=4pt, #1]%
+   \makebox[0pt]{% ignore the withd of !
+      \smash{% ignor the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{orange}\bfseries\usefont{T1}{put}{b}{b} !}% type the bold red !
+         }%
+      }%
+   }%  
+}{\end{mdframed}}

@@ -1,0 +1,226 @@
+\usepackage[svgnames]{xcolor} % coloring
+\usepackage{color}
+\usepackage[hyphens]{url}
+\usepackage{bookmark}
+\usepackage{chngcntr}
+\usepackage{pdfpages}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+
+\usepackage[inline]{enumitem}
+
+\usepackage[binary-units=true]{siunitx}
+\usepackage{tcolorbox}
+\usepackage{wrapfig}
+\usepackage{siunitx}
+\usepackage[capbesideposition={top,outside},facing=yes,capbesidesep=quad]{floatrow}
+\usepackage{minitoc}
+\usepackage{datetime}
+%~ other really useful packages
+\usepackage{graphicx} % for images
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+
+\usepackage{myusefulcommands}
+%--------------------------------------
+% titles and headings 
+\usepackage{titlesec}
+\titlespacing{\chapter} {0pt}{0pt}{0pt}
+\titlespacing{\section} {0pt}{2.8ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing{\subsection} {0pt}{2.25ex plus 1ex minus .2ex}{0.5ex plus .2ex}
+\titlespacing{\subsubsection}{0pt}{2.25ex plus 1ex minus .2ex}{0.5ex plus .2ex}
+\titlespacing{\paragraph} {\parindent}{2.25ex plus 1ex minus .2ex}{1em}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}[\titleline{\color{gray75}\titlerule[0.1pt]}]
+ 
+\setcounter{secnumdepth}{4} % allows 4 numbered subsections 
+
+\sloppy
+%--------------------------------------
+%% misc
+\graphicspath{{resources/}}
+\renewcommand{\thepart}{\Alph{part}} % use A, B, C for parts instead of roman (I, II, ...)
+\newcommand{\mynewline}{$\backslash$n} % prints '\n'
+
+%~ tables
+\usepackage{array}
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.2}
+\newcommand{\cellhead}[2]{\multicolumn{1}{#1}{\textbf{#2}}}
+
+%~ color
+\definecolor{gray75}{gray}{0.75}
+%--------------------------------------
+%% logo of the school in filigrane
+\usepackage{wallpaper}
+\ULCornerWallPaper{1}{logo-bg.pdf}
+
+%--------------------------------------
+%% table of contents
+\usepackage{tocloft}
+% change default spacing
+\addtolength{\cftchapnumwidth}{.5em}
+\addtolength{\cftsecnumwidth}{.5em}
+\addtolength{\cftsubsecnumwidth}{.5em}
+% remove header/footer
+\tocloftpagestyle{empty}
+
+
+%--------------------------------------
+%% lists
+% add vertical space after lists
+\setlist[enumerate]{topsep=0pt,after=\vspace{.3\baselineskip}}
+\setlist[itemize]{topsep=0pt,after=\vspace{.3\baselineskip}}
+
+% --------------------------------------
+%% header/footer management
+
+\pagestyle{fancy} % default style = fancy
+\fancyhf{} % reinit
+
+% set default header to `1. chapter name`, with hrule
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\fancyhead[R]{\small\itshape\MakeUppercase{\leftmark}}
+% set default footer to <name of school> -> 1/10 
+\usepackage{lastpage}
+\newcommand{\leftfootcontent}{\small\itshape{Haute école d'ingénierie et d'architecture Fribourg}}
+\newcommand{\rightfootcontent}{\thepage\  / \pageref{LastPage}}
+\renewcommand{\footrulewidth}{0.1pt}
+\fancyfoot[R]{\rightfootcontent}
+\fancyfoot[L]{\leftfootcontent}
+
+% set style used by chapter/parts to footer only
+\fancypagestyle{plain}{
+  \renewcommand{\headrulewidth}{0pt}
+   \renewcommand{\footrulewidth}{0.1pt} % default .4pt
+  \fancyhf{}
+  \fancyfoot[R]{\rightfootcontent}
+  \fancyfoot[L]{\leftfootcontent}
+}
+
+% set style empty to nothing
+\fancypagestyle{empty}{
+  \renewcommand{\headrulewidth}{0pt}
+   \renewcommand{\footrulewidth}{0pt} % default .4pt
+  \fancyhf{}
+}
+
+% --------------------------------------
+% skip part numbering 
+\counterwithout{chapter}{part}
+
+% --------------------------------------
+% minted (always the same)
+
+\usepackage[outputdir="out"]{minted}
+\usemintedstyle{github}
+
+%% \begin{javacode} ... \end{javacode}
+\newminted{java}{
+    xleftmargin=5mm,
+    fontsize=\small,
+    breaklines
+}
+
+\newminted{xml}{
+    xleftmargin=5mm,
+    fontsize=\small,
+    breaklines
+}
+%% \javafile{path}
+\newmintedfile{java}{ 
+    fontsize=\small,
+    breaklines
+}
+
+\newminted{text}{
+    xleftmargin=5mm,
+    fontsize=\small,
+    breaklines
+}
+\newminted{c}{
+    xleftmargin=5mm,
+    fontsize=\small,
+    breaklines
+}
+%% \cppfile{path}
+\newmintedfile{cpp}{ 
+    fontsize=\small,
+    breaklines
+}
+\newminted{cpp}{
+    xleftmargin=5mm,
+    fontsize=\small,
+    breaklines
+}
+
+%% \javafile{path}
+\newmintedfile{c}{ 
+    fontsize=\small,
+    breaklines
+}
+
+% ------------------------------------
+%% pdf hyperref setup
+% add gray horizontal line after title
+\renewcommand\cftaftertoctitle{\par\noindent\color{gray75}\hrulefill\par}
+    
+\hypersetup{ 
+    colorlinks=true,
+    pdftitle=Hugginess,
+    pdfauthor=Lucy Linder,
+    pdfsubject=Rapport de projet,
+    breaklinks=true, % is not supposed to break footnotes but it does...
+    % colorlinks=true,
+    linkcolor=blue!40!black,
+    % default colors:
+    % anchorcolor=black,
+    citecolor=blue!40!black,
+    % filecolor=cyan,
+    menucolor=black,
+    % runcolor=filecolor,
+    urlcolor=magenta!80!black,
+    % allcolors= better not use that
+    % [name]bordercolor can be used to specify the border colors
+    % try texdoc hyperref
+    pdfborder=0 0 0,
+    % To get the sublinks expanded in Acrobat
+    % bookmarksopen=true,
+    % bookmarksopenlevel=\maxdimen,
+    % pdfhighlight= /I, /N, /O, /P are possible. (Like CSS :active)
+}
+
+
+% ------------------------------------
+%% minitoc setup
+\usepackage{minitoc}
+\renewcommand{\mtctitle}{}   % no title
+\setcounter{minitocdepth}{1} % only \section
+\nomtcrule                   % remove default black rules (we will add ours with \myminitoc)
+
+% add gray rules to the minitoc top-bottom
+\newcommand{\myminitoc}{
+    {\hspace{8mm}\Large\emph{Contenu du chapitre}}
+    {\color{light-gray}\hrule}
+    \minitoc
+    {\color{light-gray}\hrule}
+}
+
+% ------------------------------------
+%% lists customization (package enumitem)
+
+\setlist{nolistsep}         % remove default space before/after environment
+\setitemize{itemsep=9pt}    % itemize: add space between items
+\setenumerate{itemsep=9pt}  % enumerate: add space between items
+
+% ------------------------------------
+%% fix header/footer in parts => from plain to nothing
+\usepackage{etoolbox}
+\patchcmd{\part}{plain}{empty}{}{}
+
+
+% ------------------------------------
+%% fix header/footer in parts => from plain to nothing
+
+
+
