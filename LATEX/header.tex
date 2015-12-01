@@ -1,11 +1,13 @@
 \usepackage[svgnames]{xcolor} % coloring
 \usepackage{color}
 \usepackage[hyphens]{url}
+
 \usepackage{bookmark}
 \usepackage{chngcntr}
 \usepackage{pdfpages}
 \usepackage{fancyhdr}
 \usepackage{tabularx}
+\usepackage{etoolbox}
 
 \usepackage[inline]{enumitem}
 
@@ -21,6 +23,15 @@
 \usepackage{amsmath,amsfonts,amsthm,amssymb}
 
 \usepackage{myusefulcommands}
+
+%--------------------------------------
+%~ paper and margins
+\RequirePackage[tmargin=2.2cm,bmargin=2.2cm,lmargin=2.8cm,rmargin=2.8cm]{geometry}
+%~ \setlength{\parindent}{0pt} % no paragraph indent
+\setlength{\parskip}{\baselineskip}
+%\~setlength{\parskip}{1cm plus4mm minus3mm}
+\setlength{\baselineskip}{2.5pt}
+
 %--------------------------------------
 % titles and headings 
 \usepackage{titlesec}
@@ -127,6 +138,11 @@
     fontsize=\small,
     breaklines
 }
+
+\newmintedfile{xml}{
+    fontsize=\small,
+    breaklines
+}
 %% \javafile{path}
 \newmintedfile{java}{ 
     fontsize=\small,
@@ -160,6 +176,11 @@
     breaklines
 }
 
+\newminted{bash}{
+    xleftmargin=5mm,
+    fontsize=\small,
+    breaklines
+}
 % ------------------------------------
 %% pdf hyperref setup
 % add gray horizontal line after title
@@ -167,8 +188,8 @@
     
 \hypersetup{ 
     colorlinks=true,
-    pdftitle=Hugginess,
-    pdfauthor=Lucy Linder,
+    pdftitle=\pdftitle,
+    pdfauthor=\authorname,
     pdfsubject=Rapport de projet,
     breaklinks=true, % is not supposed to break footnotes but it does...
     % colorlinks=true,
@@ -210,17 +231,47 @@
 %% lists customization (package enumitem)
 
 \setlist{nolistsep}         % remove default space before/after environment
-\setitemize{itemsep=9pt}    % itemize: add space between items
-\setenumerate{itemsep=9pt}  % enumerate: add space between items
+\setitemize{itemsep=3pt}    % itemize: add space between items
+\setenumerate{itemsep=3pt}  % enumerate: add space between items
 
 % ------------------------------------
-%% fix header/footer in parts => from plain to nothing
-\usepackage{etoolbox}
+%% fix header/footer in parts => from plain to nothing (requires etoolbox)
 \patchcmd{\part}{plain}{empty}{}{}
 
+% ------------------------------------------------------------------------------
+% Set cool chapter titles
+% ------------------------------------------------------------------------------
 
-% ------------------------------------
-%% fix header/footer in parts => from plain to nothing
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+\usepackage[Bjornstrup]{fncychap}
+\ChTitleVar{\raggedleft \huge\fontfamily{pzc}\selectfont}
+%moins d'espace avant un chapitre
+\makeatletter
+\renewcommand*{\@makechapterhead}[1]{%
+  \vspace*{0\p@}%
+  {\parindent \z@ \raggedright \normalfont 
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter%%%%% Fix for frontmatter, mainmatter, and backmatter 040920
+        \DOCH
+      \fi
+    \fi
+    \interlinepenalty\@M
+    \if@mainmatter%%%%% Fix for frontmatter, mainmatter, and backmatter 060424
+      \DOTI{#1}%
+    \else%
+      \DOTIS{#1}%
+    \fi
+  }}
+% For the case \chapter*:
+\renewcommand*{\@makeschapterhead}[1]{%
+  \vspace*{0\p@}%
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \DOTIS{#1}
+    \vskip 40\p@
+  }}
+\makeatother
 
 
 
