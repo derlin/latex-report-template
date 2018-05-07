@@ -91,14 +91,14 @@
 
 % set default header to `1. chapter name`, with hrule
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
-\fancyhead[R]{\small\itshape\MakeUppercase{\leftmark}}
+\fancyhead[LE, RO]{\small\itshape\MakeUppercase{\leftmark}}
 % set default footer to <name of school> -> 1/10 
 \usepackage{lastpage}
 \newcommand{\leftfootcontent}{\small\itshape{Haute école d'ingénierie et d'architecture Fribourg}}
 \newcommand{\rightfootcontent}{\thepage\  / \pageref{LastPage}}
 \renewcommand{\footrulewidth}{0.1pt}
-\fancyfoot[R]{\rightfootcontent}
-\fancyfoot[L]{\leftfootcontent}
+\fancyfoot[LE, RO]{\rightfootcontent}
+\fancyfoot[LO, RE]{\leftfootcontent}
 
 % set style used by chapter/parts to footer only
 \fancypagestyle{plain}{
