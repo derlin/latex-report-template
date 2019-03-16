@@ -1,0 +1,114 @@
+% !TEX root = ../report.tex
+
+\section{About this document}
+
+This is a template for awesome thesis and/or reports. 
+It supports print and online formats, minted code, side annotations, etc. I won't go into much details here, but the code should be commented enough... and google is your friend !
+
+\section{Setup and compile}
+
+\nm{clone}
+Begin by cloning the repository:
+
+\begin{minted}{bash}
+    git clone git@github.com:derlin/latex-report-template.git
+    cd latex-report-template 
+\end{minted}
+
+Compiling the report is very easy and can be done using either the command line or using Visual Studio Code.
+
+\code{make}
+Using the \textbf{commandline}:
+
+\begin{minted}{bash}
+    # usually:
+    make        # will build the report 
+    make show   # open the report (doesn't work on Windows... TODO !)
+
+    # when you have a bibliography and need multiple passes:
+    make            # first pass
+    make bcompile   # create bibliography
+    make            # fix lastpage
+\end{minted}
+
+\nm{vscode}
+Using \href{https://code.visualstudio.com/}{Visual Studio Code}:
+
+\begin{itemize}
+    \item install the \href{https://github.com/James-Yu/LaTeX-Workshop}{Latex Workshop} extension;
+    \item Create a latex recipe by adding the snippet in Listing~\ref{lst:latex-recipe} to \code{settings.json};
+    \item open the project in vscode;
+    \item from any \code{.tex} file, clic the checkmark on the lower left of the editor, select ``Build latex project'' > ``my-pdflatex''
+\end{itemize}
+
+\begin{listing}[ht]
+    \begin{minted}{json}
+        {    
+            "latex-workshop.latex.tools": [{
+                "name": "my-pdflatex",
+                "command": "pdflatex",
+                "args": [
+                "--output-directory=out",
+                "-interaction=nonstopmode",
+                "-shell-escape",
+                "%DOC%"
+                ]
+            }]
+        }
+    \end{minted}
+    \caption{Latex Workshop Recipe definition in \code{settings.json}.}
+    \label{lst:latex-recipe}
+\end{listing}
+
+\section{Overview and customization}
+
+\nm{hints}
+Here are some hints to get started:
+
+\begin{itemize}
+    \item \code{config.tex} contains the main configuration options, that is the project name, date, author name, etc. Start with this one;
+    \item by default, it will create a pdf for online use. To make it printable, replace the option \code{oneside} to \code{twosides} in the \code{documentclass} (first line of \code{report.tex});
+    \item the shebang \code{\% !TEX root = ../report.tex} at the top of many tex files is just a hint for the Latex Workshop extension. To add only if you use vscode;
+    \item the file \code{filters.tex} silences some warnings that have no impact but fill the compilation log with garbage;
+    \item to remove the filigrane, look for \code{wallpaper} in \code{header.tex};
+    \item to build the bibliography, run \code{biber out/report} in the commandline. For the sake of example, here is a cite~\cite{bapst2019pattern};
+    \item you will have to compile multiple times (e.g. after running biber or makeglossaries) to get the lastpage number right;
+\end{itemize}
+
+\nm{images}
+The root path for images is the \code{resources} directory. The \code{subfigure} package is set by default, so you can combine multiple images (or else) into one figure environment. Figure~\ref{fig:subfigs} shows an example (including Figure~\ref{fig:subfigs-1} and Figure~\ref{fig:subfigs-2}).
+
+\clearpage
+
+\begin{figure}[ht!]
+    \begin{infobox}[Nice info boxes support]
+        The custom package \code{admonitionbox} lets you create nice info or warning boxes like this one. It was inspired by the Admonition extension of the \href{https://squidfunk.github.io/mkdocs-material/extensions/admonition/}{Mkdocs Material theme}. \\
+        By default, the boxes behave like text and will span multiple pages. If you want to avoid this, wrap them into float environments using the \code{figure} environment. \\
+    
+        The available environments are:
+        \begin{itemize*}[label=$\cdot$]
+            \item \code{infobox}
+            \item \code{notebox}
+            \item \code{warnbox}
+            \item \code{dangerbox}.
+        \end{itemize*}
+    \end{infobox}
+\end{figure}
+
+
+\begin{figure}[ht]
+    \begin{mdframed}[linecolor=gray]
+        \begin{subfigure}[c]{.5\textwidth}
+            \includegraphics[width=\textwidth]{logo} 
+            \caption{one subfigure}
+            \label{fig:subfigs-1}
+        \end{subfigure}%
+        \begin{subfigure}[c]{.5\textwidth}
+            \includegraphics[width=\textwidth]{logo} 
+            \caption{another subfigure}
+            \label{fig:subfigs-2}
+        \end{subfigure}
+    \end{mdframed}
+    \caption{Using subfigures, here two that each take half of the width. The frame is of course optional.}
+    \label{fig:subfigs}
+\end{figure}

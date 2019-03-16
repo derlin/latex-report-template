@@ -1,0 +1,103 @@
+\section{Using Gitlab CI}
+
+Here is an example of \code{.gitlab-ci.yml} for building the PDF for online and print:
+
+\begin{minted}{yaml}
+    compile_pdf:
+    image: aergus/latex
+    script:
+      - p0=$(pwd) 
+      - apt install -y python-setuptools 
+      - cd / && git clone git://github.com/hugomaiavieira/pygments-style-github.git
+      - cd pygments-style-github && python setup.py install 
+      - cd $p0
+      - make && make bcompile && make glossaries && make && make
+      - mv report.pdf report-online.pdf
+      - sed 's/oneside/twoside/' report.tex 1<> report.tex
+      - make && make
+      - mv report.pdf report-print.pdf
+    artifacts:
+      paths:
+        - report-online.pdf
+        - report-print.pdf
+    only:
+      - master     
+\end{minted}
+
+
+\section{Glossary}
+
+Using a glossary is easy in latex:
+\begin{itemize}
+    \item use the package \code{glossaries};
+    \item create a \code{glossaries.tex} file (see Listing~\ref{lst:glossaries});
+    \item include the file in the report and print it using \code{\\printglossary};
+    \item to compile the glossary, use the terminal command \code{makeglossaries -d out}.
+\end{itemize}
+
+
+Here are some command you can add to the \code{header.tex}. This will automatically color the glossary entries in blue in the text (provided you use those commands):
+
+\begin{minted}{latex}
+    %% glossary / vocabulary
+
+    % term in blue (but no glossary links)
+    \newcommand{\ddef}[1]{\textcolor{blue}{#1}}
+    % glossary links in blue
+    \newcommand{\ddefg}[1]{\textcolor{blue}{\hypersetup{linkcolor=blue}\gls{#1}}}
+    \newcommand{\ddefgpl}[1]{\textcolor{blue}{\hypersetup{linkcolor=blue}\glspl{#1}}}
+\end{minted}
+
+I also customized a bit the glossary style using this code (you can put it at the top of the \code{glossary.tex} file for example):
+
+\begin{minted}{latex}
+    % == custom style
+
+    % adapt `long' glossarystyle so it takes the full width
+    % inspired from see https://tex.stackexchange.com/a/118236 (old)
+    % updated newglossarystyle skeleton https://tex.stackexchange.com/a/170627
+    % \glsX commands http://tug.ctan.org/macros/latex/contrib/glossaries/glossaries-user.html
+    \newglossarystyle{mylong}{%
+    \setglossarystyle{longheader}% base this style on the `long' style
+    \setlength\glsdescwidth{.7\textwidth} % set the description column width
+    % no indent before the longtable:
+    \setlength\LTleft{0pt}%
+    % renew the table: both columns together now have \textwidth:
+    \renewenvironment{theglossary}%
+        {%
+        \begin{longtable}
+            {
+            @{}>{\raggedright}
+                p{\dimexpr\textwidth-\glsdescwidth-2\tabcolsep\relax}
+            p{\glsdescwidth}
+            @{}
+            }
+        }%
+        {\end{longtable}}%
+    % update the rows (especially the pagelist output)
+    % glspostdescription adds the "." at the end of the description
+    % ##2 is the pagelist
+    \renewcommand*{\glossentry}[2]{%
+    \glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}} & % name
+    \glossentrydesc{##1}\glspostdescription\space % description
+        \emph{\footnotesize Page ##2}.\\ % pagelist
+    }%
+    }
+
+    \setglossarystyle{mylong}
+\end{minted}
+
+\begin{listing}[ht!]
+    \begin{minted}{latex}
+        \newglossaryentry{derlin}{
+            name={derlin},
+            description={My developer name, which is simply my last name reversed: \emph{linder} $\rightarrow$ \emph{delrin}}
+        }
+        
+        \newacronym{QPU}{QPU}{Quantum Processing Unit}
+
+        \glsaddallunused % if you have some unused entries
+    \end{minted}
+    \caption{Example of \code{glossary.tex} content.}
+    \label{lst:glossaries}
+\end{listing}

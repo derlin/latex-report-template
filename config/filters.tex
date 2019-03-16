@@ -1,0 +1,20 @@
+\usepackage[immediate]{silence}
+
+% turn off warnings from fanchdr: 
+%   "Package Fancyhdr Warning: XX `E' option without 
+%    twoside option is useless"... we know !
+\WarningFilter{Fancyhdr}{\fancyhead's `E' option }
+\WarningFilter{Fancyhdr}{\fancyfoot's `E' option }
+
+% From minitoc's documentation, those messages are 
+% "always printed when you use the hyperref package with minitoc,
+% but then it is harmless"
+\WarningFilter{minitoc(hints)}{W0023} % hyperref warning
+\WarningFilter{minitoc(hints)}{W0028} % chapter warning
+\WarningFilter{minitoc(hints)}{W0030} % part warning
+% Apparently, the titlesec package is incompatible with minitoc,
+% but I didn't see any problem in the output...  
+\WarningFilter{minitoc(hints)}{W0099} % titlesec warning
+% hide "Some hints have been written 
+% in the report.log file."
+\WarningFilter{minitoc(hints)}{W0024}

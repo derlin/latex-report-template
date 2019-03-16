@@ -2,24 +2,40 @@
 % \documentclass[twoside]{BookTemplate}
 % choose if 2-sides (=>printing) or not
 
-%~ language : load french support
-\usepackage[frenchb]{babel} 
-\usepackage[utf8]{inputenc} 
-\usepackage[T1]{fontenc}
+% silence some warnings (load it before loading other packages)
+\input{config/filters.tex}
 
 %% add header (package configs etc)
 \input{config/config.tex}
 \input{config/header.tex}
 
+% language 
+\usepackage[english]{babel} % use frenchb for french support
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+
+%% FONTs
+% use liberation sans as main font, inconsolata as mono font
+\usepackage{libertine}
+\usepackage{inconsolata}
+
 %% bibiliography setup
 % sorted as it appears in the text
 \usepackage[backend=biber, bibencoding=auto, sorting=none]{biblatex}
 \addbibresource{parties/bibliography.bib}
+% fix hyperref, see https://tex.stackexchange.com/a/199367
+\makeatletter
+\pretocmd{\blx@head@bibintoc}{\phantomsection}{}{\ddt}
+\makeatother
+
+\usepackage{lipsum} % TODO remove
 
 % ======================================
 
 \begin{document}
 
+\frontmatter
 \dominitoc % Initialization of minitoc out of the block !
 {   
     % in here, no header/footer
@@ -30,83 +46,46 @@
 
     \input{parties/0-abstract.tex}
     \cleardoublepage
-    
-    \input{parties/1-about_the_author.tex}
-    \cleardoublepage
 
     \tableofcontents
     \cleardoublepage
 }
 
-%== begin parts
+\mainmatter
+
+
 %% intro
 % \part{Introduction}
-\setcounter{page}{1} % first numbered page
+
 \chapter{Introduction}\label{chap:intro}
 \myminitoc
-\input{parties/2-introduction.tex}
- 
-%% intro
-\chapter{Objectifs}\label{chap:objectifs}
-\myminitoc
-\input{parties/3-objectifs.tex}
+\input{parties/1-introduction.tex}
 
-%% analyse
-% \part{Analyse}
-\chapter{Analyse}\label{chap:anal}
-\myminitoc
-\input{parties/4-analyse.tex}
-
-
-%% conception
-% \part{Conception}
-\chapter{Conception}\label{chap:conception}
-\myminitoc
-\input{parties/5-conception.tex}
-
- 
-%% implementation
-% \part{Implémentation et tests}
- 
-\chapter{Implémentation}\label{chap:impl}
-\myminitoc
-\input{parties/6-implementation.tex}
-%% tests
-\chapter{Tests}\label{chap:tests}
-\myminitoc
-\input{parties/7-tests.tex}
-
-%% conclusion
-% \part{Conclusion}
-\chapter{Conclusion}\label{chap:conclusion}
-\input{parties/8-conclusion.tex}
+% ... etc ...
 
 % ----------------------------------
-\part{Annexes et bibliographie}
+% \part{Annexes et bibliographie}
 
-% unnumbered chapters, alphanumeric numbering of sections
-% \appendix
-\renewcommand{\thechapter}{}
-\renewcommand{\thesection}{\Alph{section}}
-
-%% bilbiography
-\clearpage
-\phantomsection
-\addcontentsline{toc}{chapter}{Bibliographie}
-\nocite{*} % print all, even if not cited
-% \printbibliography{heading=bibintoc, title={Bibliographie}}
-\begingroup
-\raggedright
-\sloppy
-\printbibliography
-\endgroup
+% see https://tex.stackexchange.com/questions/174887/link-to-appendix-from-anywhere-in-the-document-goes-to-the-wrong-place
+%\backmatter
+\renewcommand{\theHchapter}{A\arabic{chapter}}
+\appendix
 
 %% Annexes
-\chapter{Annexes}
-\section{Mon annexe 1}\label{annexe:1}
-annexe
-\clearpage
+\chapter{Appendix}
+\input{parties/A-appendix.tex}
+\cleardoublepage
 
-Je, soussignée \authorname, déclare sur l'honneur que le travail rendu est le fruit d'un travail personnel. Je certifie ne pas avoir eu recours au plagiat ou à toutes autres formes de fraudes. Toutes les sources d'information utilisées et les citations d'auteur ont été clairement mentionnées.
+%% bibliography
+\cleardoublepage
+\begingroup
+    \raggedright % don't justify the bibliography
+    \renewcommand{\UrlFont}{\ttfamily\small}
+    \printbibliography[title={References}, heading=bibintoc]
+\endgroup
+
+%% last page empty
+\cleardoublepage
+\thispagestyle{empty}
 
 \end{document}
