@@ -1,6 +1,6 @@
 TEXLIBS='LATEX'
 MINTED=1
-SRC=rapport.tex
+SRC=report.tex
 TEX=pdflatex
 
 # -----------------------------------------------------------------
